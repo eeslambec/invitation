@@ -237,22 +237,56 @@
   // Audio Music Player Controls
   const bgMusic = document.getElementById('bgMusic');
   const musicToggle = document.getElementById('musicToggle');
-  let musicStarted = false;
+  const FALLBACK_MUSIC_URL = 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-background-music-112521.mp3';
 
-  function playMusic() {
-    if (!bgMusic) {
-      startHarpSynth();
-      return;
-    }
-    bgMusic.play().then(function () {
-      musicStarted = true;
-      if (musicToggle) musicToggle.classList.add('music-toggle--playing');
-    }).catch(function () {
-      // If browser blocked unmuted autoplay or file error, fallback to synth
-      if (!musicStarted) {
-        startHarpSynth();
+  let musicStarted = false;
+  let bgMusicFailed = false;
+
+  if (bgMusic) {
+    bgMusic.addEventListener('error', function () {
+      if (bgMusic.src !== FALLBACK_MUSIC_URL && !bgMusic.src.includes('pixabay')) {
+        bgMusic.src = FALLBACK_MUSIC_URL;
+        bgMusic.load();
+      } else {
+        bgMusicFailed = true;
       }
     });
+  }
+
+  function playMusic(isAutoplayAttempt) {
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+
+    if (!bgMusic || bgMusicFailed) {
+      if (!isAutoplayAttempt) {
+        startHarpSynth();
+        removeInteractionListeners();
+      }
+      return;
+    }
+
+    bgMusic.volume = 0.35;
+    const playPromise = bgMusic.play();
+
+    if (playPromise !== undefined) {
+      playPromise
+        .then(function () {
+          musicStarted = true;
+          if (musicToggle) musicToggle.classList.add('music-toggle--playing');
+          removeInteractionListeners();
+        })
+        .catch(function (error) {
+          musicStarted = false;
+          if (musicToggle) musicToggle.classList.remove('music-toggle--playing');
+
+          // If user triggered playback explicitly (not silent page load) and audio failed, use synth fallback
+          if (!isAutoplayAttempt) {
+            startHarpSynth();
+            removeInteractionListeners();
+          }
+        });
+    }
   }
 
   function pauseMusic() {
@@ -266,7 +300,7 @@
     if (isHarpPlaying || (bgMusic && !bgMusic.paused)) {
       pauseMusic();
     } else {
-      playMusic();
+      playMusic(false);
     }
   }
 
@@ -277,21 +311,27 @@
     });
   }
 
-  // Auto-play default execution on load & first interaction
-  playMusic();
+  // Attempt silent autoplay on initial page load (if browser policy allows)
+  playMusic(true);
 
   function handleFirstInteraction() {
     if (!musicStarted && !isHarpPlaying) {
-      playMusic();
+      playMusic(false);
     }
-    window.removeEventListener('click', handleFirstInteraction);
-    window.removeEventListener('touchstart', handleFirstInteraction);
-    window.removeEventListener('scroll', handleFirstInteraction);
   }
 
+  function removeInteractionListeners() {
+    window.removeEventListener('click', handleFirstInteraction);
+    window.removeEventListener('touchstart', handleFirstInteraction);
+    window.removeEventListener('pointerdown', handleFirstInteraction);
+    window.removeEventListener('keydown', handleFirstInteraction);
+  }
+
+  // Bind to valid user gesture events only (note: 'scroll' is excluded as browsers block audio on scroll)
   window.addEventListener('click', handleFirstInteraction);
   window.addEventListener('touchstart', handleFirstInteraction);
-  window.addEventListener('scroll', handleFirstInteraction);
+  window.addEventListener('pointerdown', handleFirstInteraction);
+  window.addEventListener('keydown', handleFirstInteraction);
 
   // Navigation Logic
   const nav = document.getElementById('nav');
