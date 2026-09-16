@@ -133,7 +133,8 @@
   }
 
   // Plucked Harp Note
-  function playHarpPluck(time, freq, gainVal = 0.07) {
+  function playHarpPluck(time, freq, gainVal) {
+    gainVal = gainVal || 0.07;
     if (!audioCtx || !freq) return;
     const osc1 = audioCtx.createOscillator();
     const osc2 = audioCtx.createOscillator();
@@ -165,7 +166,8 @@
   }
 
   // Glistening High Chime Accent
-  function playGlisten(time, freq, gainVal = 0.03) {
+  function playGlisten(time, freq, gainVal) {
+    gainVal = gainVal || 0.03;
     if (!audioCtx || !freq) return;
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -198,21 +200,39 @@
 
   function scheduleHarpLoop() {
     if (!isHarpPlaying || !audioCtx) return;
-    const now = audioCtx.currentTime;
+    var now = audioCtx.currentTime;
 
-    const chordIndex = Math.floor(harpStep / 6) % HARP_ARPEGGIOS.length;
-    const noteIndex = harpStep % 6;
-    const harpFreq = HARP_ARPEGGIOS[chordIndex][noteIndex];
+    var chordIndex = Math.floor(harpStep / 6) % HARP_ARPEGGIOS.length;
+    var noteIndex = harpStep % 6;
+    var harpFreq = HARP_ARPEGGIOS[chordIndex][noteIndex];
 
     playHarpPluck(now, harpFreq, noteIndex === 0 ? 0.09 : 0.05);
 
     if (harpStep % 3 === 0) {
-      const glistenFreq = GLISTEN_NOTES[(harpStep / 3) % GLISTEN_NOTES.length];
+      var glistenFreq = GLISTEN_NOTES[(harpStep / 3) % GLISTEN_NOTES.length];
       playGlisten(now + 0.1, glistenFreq, 0.025);
     }
 
     harpStep++;
     harpTimer = setTimeout(scheduleHarpLoop, 260);
+  }
+
+  // Audio Music Player Controls
+  var bgMusic = document.getElementById('bgMusic');
+  var musicToggle = document.getElementById('musicToggle');
+
+  var musicStarted = false;
+  var bgMusicFailed = false;
+  var audioUnlocked = false;
+
+  // Pre-load the audio element for mobile: set attributes that help iOS/Android
+  if (bgMusic) {
+    bgMusic.setAttribute('playsinline', '');
+    bgMusic.setAttribute('webkit-playsinline', '');
+
+    bgMusic.addEventListener('error', function () {
+      bgMusicFailed = true;
+    });
   }
 
   function startHarpSynth() {
@@ -234,57 +254,58 @@
     if (musicToggle) musicToggle.classList.remove('music-toggle--playing');
   }
 
-  // Audio Music Player Controls
-  const bgMusic = document.getElementById('bgMusic');
-  const musicToggle = document.getElementById('musicToggle');
-  const FALLBACK_MUSIC_URL = 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=wedding-background-music-112521.mp3';
+  // Unlock audio on mobile — must be called inside a click/touchend handler
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    audioUnlocked = true;
 
-  let musicStarted = false;
-  let bgMusicFailed = false;
-
-  if (bgMusic) {
-    bgMusic.addEventListener('error', function () {
-      if (bgMusic.src !== FALLBACK_MUSIC_URL && !bgMusic.src.includes('pixabay')) {
-        bgMusic.src = FALLBACK_MUSIC_URL;
-        bgMusic.load();
-      } else {
-        bgMusicFailed = true;
-      }
-    });
-  }
-
-  function playMusic(isAutoplayAttempt) {
+    // Resume Web Audio API context (needed for synth fallback)
+    initWebAudioSynth();
     if (audioCtx && audioCtx.state === 'suspended') {
       audioCtx.resume();
     }
 
-    if (!bgMusic || bgMusicFailed) {
-      if (!isAutoplayAttempt) {
-        startHarpSynth();
-        removeInteractionListeners();
+    // iOS requires a short silent play to unlock the <audio> element
+    if (bgMusic) {
+      bgMusic.muted = true;
+      bgMusic.volume = 0;
+      var unlockPromise = bgMusic.play();
+      if (unlockPromise !== undefined) {
+        unlockPromise.then(function () {
+          bgMusic.pause();
+          bgMusic.muted = false;
+          bgMusic.currentTime = 0;
+        }).catch(function () {
+          bgMusic.muted = false;
+        });
       }
+    }
+  }
+
+  function playMusic() {
+    // Make sure audio is unlocked
+    unlockAudio();
+
+    if (!bgMusic || bgMusicFailed) {
+      startHarpSynth();
       return;
     }
 
     bgMusic.volume = 0.35;
-    const playPromise = bgMusic.play();
+    bgMusic.muted = false;
+    var playPromise = bgMusic.play();
 
     if (playPromise !== undefined) {
       playPromise
         .then(function () {
           musicStarted = true;
           if (musicToggle) musicToggle.classList.add('music-toggle--playing');
-          removeInteractionListeners();
         })
-        .catch(function (error) {
+        .catch(function () {
           musicStarted = false;
           if (musicToggle) musicToggle.classList.remove('music-toggle--playing');
-
-          // If user triggered playback explicitly (not silent page load) and audio failed, use synth fallback
-          if (!isAutoplayAttempt) {
-            startHarpSynth();
-            removeInteractionListeners();
-          }
+          // Audio element failed even after unlock — use synth fallback
+          startHarpSynth();
         });
     }
   }
@@ -300,7 +321,7 @@
     if (isHarpPlaying || (bgMusic && !bgMusic.paused)) {
       pauseMusic();
     } else {
-      playMusic(false);
+      playMusic();
     }
   }
 
@@ -311,27 +332,37 @@
     });
   }
 
-  // Attempt silent autoplay on initial page load (if browser policy allows)
-  playMusic(true);
+  // ── Trigger music from the hero "Taklifnomani o'qish" button ──
+  // Mobile browsers require a direct user gesture (click) to unlock audio.
+  // We hook into the existing hero CTA button — when they tap it, we unlock
+  // audio and start playing. This is a trusted gesture on every platform.
+  var heroBtn = document.querySelector('.hero .btn--primary');
 
-  function handleFirstInteraction() {
-    if (!musicStarted && !isHarpPlaying) {
-      playMusic(false);
+  if (heroBtn) {
+    heroBtn.addEventListener('click', function () {
+      if (!musicStarted && !isHarpPlaying) {
+        unlockAudio();
+        playMusic();
+      }
+    });
+  }
+
+  // Also try silent autoplay on page load (works on desktop)
+  if (bgMusic) {
+    bgMusic.volume = 0.35;
+    var autoplayPromise = bgMusic.play();
+    if (autoplayPromise !== undefined) {
+      autoplayPromise.then(function () {
+        musicStarted = true;
+        audioUnlocked = true;
+        if (musicToggle) musicToggle.classList.add('music-toggle--playing');
+      }).catch(function () {
+        // Autoplay blocked (mobile) — music will start when hero button is tapped
+        bgMusic.pause();
+        bgMusic.currentTime = 0;
+      });
     }
   }
-
-  function removeInteractionListeners() {
-    window.removeEventListener('click', handleFirstInteraction);
-    window.removeEventListener('touchstart', handleFirstInteraction);
-    window.removeEventListener('pointerdown', handleFirstInteraction);
-    window.removeEventListener('keydown', handleFirstInteraction);
-  }
-
-  // Bind to valid user gesture events only (note: 'scroll' is excluded as browsers block audio on scroll)
-  window.addEventListener('click', handleFirstInteraction);
-  window.addEventListener('touchstart', handleFirstInteraction);
-  window.addEventListener('pointerdown', handleFirstInteraction);
-  window.addEventListener('keydown', handleFirstInteraction);
 
   // Navigation Logic
   const nav = document.getElementById('nav');
