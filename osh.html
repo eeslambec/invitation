@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Osh (palov) taklifnomasi — ertalabki oshga marhamat">
+  <title data-i18n="pageTitle">Abdurahmon & Muslima — Osh taklifnomasi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/osh.css">
+</head>
+<body>
+
+  <nav class="nav" id="nav">
+    <div class="nav__backdrop" id="navBackdrop"></div>
+    <div class="nav__inner">
+      <a href="#hero" class="nav__logo">A & M</a>
+
+      <div class="nav__right">
+        <div class="lang-switch" id="langSwitch">
+          <button type="button" class="lang-btn lang-btn--active" data-lang="uz">UZ</button>
+          <span class="lang-divider">|</span>
+          <button type="button" class="lang-btn" data-lang="ru">RU</button>
+        </div>
+
+        <button class="nav__toggle" id="navToggle" aria-label="Menyuni ochish" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <ul class="nav__links" id="navLinks">
+        <li><a href="#invitation" data-i18n="navTaklif">Taklif</a></li>
+        <li><a href="#calendar" data-i18n="navTaqvim">Taqvim</a></li>
+        <li><a href="#location" data-i18n="navManzil">Manzil</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero" id="hero">
+    <div class="hero__overlay"></div>
+    <div class="hero__content">
+      <p class="hero__badge" data-i18n="heroBadge">🍚 Osh marosimi</p>
+      <h1 class="hero__names">Abdurahmon <span class="hero__amp">&</span> Muslima</h1>
+      <p class="hero__date" data-i18n="heroDate">2026-yil 7-oktabr, chorshanba</p>
+      <p class="hero__time" data-i18n="heroTime">Soat 07:00</p>
+      <p class="hero__location" data-i18n="heroLocation">«Zamona» to'yxonasi · Toshkent</p>
+      <a href="#invitation" class="btn btn--primary" data-i18n="heroBtn">Taklifnomani o'qish</a>
+    </div>
+    <div class="hero__scroll">
+      <span data-i18n="heroScroll">Pastga</span>
+      <div class="hero__scroll-line"></div>
+    </div>
+  </header>
+
+  <section class="invitation" id="invitation">
+    <div class="container">
+      <div class="invitation__inner">
+        <p class="section-label" data-i18n="invLabel">Osh taklifnomasi</p>
+        <h2 class="section-title" data-i18n="invTitle">Hurmatli mehmon!</h2>
+        <div class="invitation__text">
+          <p data-i18n="invP1">
+            Farzandimiz Abdurahmonning to'y tantanasi munosabati bilan ertalabki osh marosimiga sizni samimiy taklif qilamiz.
+          </p>
+          <p data-i18n="invP2">
+            Dasturxonimizga marhamat! Palovimiz tayyor, joyimiz munavvar. Sizning kelishingiz bizga sharaf va quvonch bag'ishlaydi.
+          </p>
+          <p data-i18n="invP3">
+            An'anaviy oshimizni yaqinlarimiz davrasida birga tatib ko'ramiz. Sizni chin dildan kutamiz!
+          </p>
+          <p class="invitation__closing" data-i18n="invClosing">
+            Marhamat — Abdurahmon oilasi
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="osh-feature" id="osh-feature">
+    <div class="container">
+      <div class="osh-feature__grid">
+        <div class="osh-feature__card">
+          <span class="osh-feature__emoji">🍚</span>
+          <h3 class="osh-feature__title" data-i18n="featPlov">Palov</h3>
+          <p class="osh-feature__desc" data-i18n="featPlovDesc">An'anaviy o'zbek palovi</p>
+        </div>
+        <div class="osh-feature__card">
+          <span class="osh-feature__emoji">⏰</span>
+          <h3 class="osh-feature__title" data-i18n="featTime">Soat 07:00</h3>
+          <p class="osh-feature__desc" data-i18n="featTimeDesc">Ertalabki osh boshlanish vaqti</p>
+        </div>
+        <div class="osh-feature__card">
+          <span class="osh-feature__emoji">🤝</span>
+          <h3 class="osh-feature__title" data-i18n="featTogether">Birga</h3>
+          <p class="osh-feature__desc" data-i18n="featTogetherDesc">Yaqinlar davrasida</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="calendar-section" id="calendar">
+    <div class="container">
+      <p class="section-label" data-i18n="calLabel">Osh haftasi</p>
+      <h2 class="section-title" data-i18n="calTitle">Oktabr 2026</h2>
+      <div class="calendar-card">
+        <div class="calendar-week">
+          <div class="calendar-day">
+            <span class="calendar-day__name" data-i18n="dayDush">Dush</span>
+            <span class="calendar-day__number">05</span>
+          </div>
+          <div class="calendar-day">
+            <span class="calendar-day__name" data-i18n="daySesh">Sesh</span>
+            <span class="calendar-day__number">06</span>
+          </div>
+          <div class="calendar-day calendar-day--osh">
+            <span class="calendar-day__badge" data-i18n="calBadge">Osh kuni</span>
+            <span class="calendar-day__name" data-i18n="dayChorsh">Chorsh</span>
+            <span class="calendar-day__number">07</span>
+          </div>
+          <div class="calendar-day">
+            <span class="calendar-day__name" data-i18n="dayPaysh">Paysh</span>
+            <span class="calendar-day__number">08</span>
+          </div>
+          <div class="calendar-day">
+            <span class="calendar-day__name" data-i18n="dayJuma">Juma</span>
+            <span class="calendar-day__number">09</span>
+          </div>
+          <div class="calendar-day">
+            <span class="calendar-day__name" data-i18n="dayShanba">Shanba</span>
+            <span class="calendar-day__number">10</span>
+          </div>
+          <div class="calendar-day">
+            <span class="calendar-day__name" data-i18n="dayYaksh">Yaksh</span>
+            <span class="calendar-day__number">11</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="countdown" aria-label="Osh kunigacha qolgan vaqt">
+    <div class="container">
+      <p class="section-label" data-i18n="countLabel">Osh kunigacha</p>
+      <div class="countdown__grid" id="countdown">
+        <div class="countdown__item">
+          <span class="countdown__number" id="days">00</span>
+          <span class="countdown__label" data-i18n="days">Kun</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__number" id="hours">00</span>
+          <span class="countdown__label" data-i18n="hours">Soat</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__number" id="minutes">00</span>
+          <span class="countdown__label" data-i18n="minutes">Daqiqa</span>
+        </div>
+        <div class="countdown__item">
+          <span class="countdown__number" id="seconds">00</span>
+          <span class="countdown__label" data-i18n="seconds">Soniya</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="location-section" id="location">
+    <div class="container">
+      <p class="section-label section-label--light" data-i18n="locLabel">Manzil</p>
+      <h2 class="section-title section-title--light" data-i18n="locTitle">«Zamona» to'yxonasi</h2>
+
+      <div class="location-card">
+        <div class="location-card__icon">📍</div>
+        <h3 class="location-card__name" data-i18n="locName">«Zamona» to'yxonasi</h3>
+        <p class="location-card__address" data-i18n-html="locAddress">
+          Toshkent shahri<br>
+          Olmazor tumani
+        </p>
+
+        <div class="location-card__buttons">
+          <a
+            href="https://yandex.uz/maps/org/zamona/180038073888/?ll=69.241425%2C41.343839&mode=search&pt=69.279737%2C41.311151&sll=69.279737%2C41.311151&sspn=0.000021%2C0.011746&text=zamona&z=4"
+            class="btn btn--map btn--yandex"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-i18n="btnYandex"
+          >
+            Yandex Xaritalar
+          </a>
+          <a
+            href="https://www.google.com/maps/place/Restaurant+%E2%80%9CZamona%E2%80%9D/@41.3805945,69.2042133,17z/data=!4m6!3m5!1s0x38ae8dc541286251:0x4e62f627a32ea10c!8m2!3d41.3800793!4d69.2060479!16s%2Fg%2F11cn15x05c?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D"
+            class="btn btn--map btn--google"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-i18n="btnGoogle"
+          >
+            Google Xaritalar
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <p class="footer__names">Abdurahmon & Muslima</p>
+      <p class="footer__date" data-i18n="footerDate">7-oktabr, 2026</p>
+      <p class="footer__tagline">#AbdurahmonVaMuslima2026</p>
+      <p class="footer__credit">
+        <a href="https://t.me/rakhmatli" target="_blank" rel="noopener noreferrer">By RAKHMATLI</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Background Music Element -->
+  <audio id="bgMusic" src="audio/osh.mp3" loop preload="auto"></audio>
+
+  <!-- Floating Music Toggle Button -->
+  <button class="music-toggle" id="musicToggle" aria-label="Musiqa" title="Musiqa">
+    <span class="music-toggle__icon" id="musicIcon">🎵</span>
+    <span class="music-toggle__waves" id="musicWaves">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
+
+  <script src="js/osh.js"></script>
+</body>
+</html>
