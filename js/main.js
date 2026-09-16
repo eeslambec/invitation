@@ -223,7 +223,6 @@
 
   var musicStarted = false;
   var bgMusicFailed = false;
-  var audioUnlocked = false;
 
   // Pre-load the audio element for mobile: set attributes that help iOS/Android
   if (bgMusic) {
@@ -254,37 +253,12 @@
     if (musicToggle) musicToggle.classList.remove('music-toggle--playing');
   }
 
-  // Unlock audio on mobile — must be called inside a click/touchend handler
-  function unlockAudio() {
-    if (audioUnlocked) return;
-    audioUnlocked = true;
-
-    // Resume Web Audio API context (needed for synth fallback)
+  function playMusic() {
+    // Resume Web Audio API context if needed (for synth fallback)
     initWebAudioSynth();
     if (audioCtx && audioCtx.state === 'suspended') {
       audioCtx.resume();
     }
-
-    // iOS requires a short silent play to unlock the <audio> element
-    if (bgMusic) {
-      bgMusic.muted = true;
-      bgMusic.volume = 0;
-      var unlockPromise = bgMusic.play();
-      if (unlockPromise !== undefined) {
-        unlockPromise.then(function () {
-          bgMusic.pause();
-          bgMusic.muted = false;
-          bgMusic.currentTime = 0;
-        }).catch(function () {
-          bgMusic.muted = false;
-        });
-      }
-    }
-  }
-
-  function playMusic() {
-    // Make sure audio is unlocked
-    unlockAudio();
 
     if (!bgMusic || bgMusicFailed) {
       startHarpSynth();
@@ -304,7 +278,7 @@
         .catch(function () {
           musicStarted = false;
           if (musicToggle) musicToggle.classList.remove('music-toggle--playing');
-          // Audio element failed even after unlock — use synth fallback
+          // Audio element failed — use synth fallback
           startHarpSynth();
         });
     }
@@ -333,28 +307,25 @@
   }
 
   // ── Trigger music from the hero "Taklifnomani o'qish" button ──
-  // Mobile browsers require a direct user gesture (click) to unlock audio.
-  // We hook into the existing hero CTA button — when they tap it, we unlock
-  // audio and start playing. This is a trusted gesture on every platform.
+  // Mobile browsers need a direct user gesture (click) to allow audio.play().
+  // The hero CTA button tap IS that gesture — we call play() directly inside it.
   var heroBtn = document.querySelector('.hero .btn--primary');
 
   if (heroBtn) {
     heroBtn.addEventListener('click', function () {
       if (!musicStarted && !isHarpPlaying) {
-        unlockAudio();
         playMusic();
       }
     });
   }
 
-  // Also try silent autoplay on page load (works on desktop)
+  // Try silent autoplay on page load (works on desktop, blocked on mobile)
   if (bgMusic) {
     bgMusic.volume = 0.35;
     var autoplayPromise = bgMusic.play();
     if (autoplayPromise !== undefined) {
       autoplayPromise.then(function () {
         musicStarted = true;
-        audioUnlocked = true;
         if (musicToggle) musicToggle.classList.add('music-toggle--playing');
       }).catch(function () {
         // Autoplay blocked (mobile) — music will start when hero button is tapped
