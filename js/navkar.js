@@ -1,37 +1,37 @@
 (function () {
   'use strict';
 
-  // Osh date: October 7, 2026 at 07:00
-  const OSH_DATE = new Date('2026-10-07T07:00:00');
+  // Navkar date: October 8, 2026 at 12:00
+  const NAVKAR_DATE = new Date('2026-10-08T12:00:00');
 
   // Multilingual Dictionary
   const TRANSLATIONS = {
     uz: {
-      pageTitle: "Abdurahmon & Muslima — Osh taklifnomasi",
+      pageTitle: "Abdurahmon & Muslima — Kuyov navkar taklifnomasi",
       navTaklif: "Taklif",
       navTaqvim: "Taqvim",
       navManzil: "Manzil",
-      heroBadge: "🍚 Osh marosimi",
-      heroDate: "2026-yil 7-oktabr, chorshanba",
-      heroTime: "Soat 07:00",
-      heroLocation: "«Zamona» to'yxonasi · Toshkent",
+      heroBadge: "🤵 Kuyov navkar",
+      heroDate: "2026-yil 8-oktabr, payshanba",
+      heroTime: "Soat 12:00",
+      heroLocation: "Keles · Toshkent viloyati",
       heroBtn: "Taklifnomani o'qish",
       heroScroll: "Pastga",
-      invLabel: "Osh taklifnomasi",
+      invLabel: "Kuyov navkar taklifnomasi",
       invTitle: "Hurmatli mehmon!",
-      invP1: "Farzandimiz Abdurahmonning to'y tantanasi munosabati bilan ertalabki osh marosimiga sizni samimiy taklif qilamiz.",
-      invP2: "Dasturxonimizga marhamat! Palovimiz tayyor, joyimiz munavvar. Sizning kelishingiz bizga sharaf va quvonch bag'ishlaydi.",
-      invP3: "An'anaviy oshimizni yaqinlarimiz davrasida birga tatib ko'ramiz. Sizni chin dildan kutamiz!",
+      invP1: "Farzandimiz Abdurahmonning to'y tantanasi munosabati bilan kuyov navkar marosimiga sizni samimiy taklif qilamiz.",
+      invP2: "Uyimizga marhamat! Dasturxonimiz tayyor, joyimiz munavvar. Sizning kelishingiz bizga sharaf va quvonch bag'ishlaydi.",
+      invP3: "Kuyov navkar marosimini yaqinlarimiz davrasida birga nishonlaymiz. Sizni chin dildan kutamiz!",
       invClosing: "Hurmat ila — Rovshanjon Yunusov oilasi",
-      featPlov: "Palov",
-      featPlovDesc: "An'anaviy o'zbek palovi",
-      featTime: "Soat 07:00",
-      featTimeDesc: "Ertalabki osh boshlanish vaqti",
+      featHome: "Uyda",
+      featHomeDesc: "Oilaviy marosim",
+      featTime: "Soat 12:00",
+      featTimeDesc: "Navkar boshlanish vaqti",
       featTogether: "Birga",
       featTogetherDesc: "Yaqinlar davrasida",
-      calLabel: "Osh haftasi",
+      calLabel: "Navkar haftasi",
       calTitle: "Oktabr 2026",
-      calBadge: "Osh kuni",
+      calBadge: "Navkar kuni",
       dayDush: "Dush",
       daySesh: "Sesh",
       dayChorsh: "Chorsh",
@@ -39,45 +39,45 @@
       dayJuma: "Juma",
       dayShanba: "Shanba",
       dayYaksh: "Yaksh",
-      countLabel: "Osh kunigacha",
+      countLabel: "Navkar kunigacha",
       days: "Kun",
       hours: "Soat",
       minutes: "Daqiqa",
       seconds: "Soniya",
       locLabel: "Manzil",
-      locTitle: "«Zamona» to'yxonasi",
-      locName: "«Zamona» to'yxonasi",
-      locAddress: "Toshkent shahri<br>Olmazor tumani",
+      locTitle: "Bizning uyimiz",
+      locName: "Bizning uyimiz",
+      locAddress: "Keles, kotej ko'cha<br>Obod 2-tor ko'chasi",
       btnYandex: "Yandex Xaritalar",
       btnGoogle: "Google Xaritalar",
-      footerDate: "7-oktabr, 2026"
+      footerDate: "8-oktabr, 2026"
     },
     ru: {
-      pageTitle: "Абдурахмон & Муслима — Приглашение на ош",
+      pageTitle: "Абдурахмон & Муслима — Приглашение на навкар",
       navTaklif: "Приглашение",
       navTaqvim: "Календарь",
       navManzil: "Адрес",
-      heroBadge: "🍚 Утренний плов",
-      heroDate: "7 октября 2026 года, среда",
-      heroTime: "В 07:00",
-      heroLocation: "Ресторан «Zamona» · Ташкент",
+      heroBadge: "🤵 Навкар жениха",
+      heroDate: "8 октября 2026 года, четверг",
+      heroTime: "В 12:00",
+      heroLocation: "Келес · Ташкентская область",
       heroBtn: "Читать приглашение",
       heroScroll: "Вниз",
-      invLabel: "Приглашение на ош",
+      invLabel: "Приглашение на навкар",
       invTitle: "Уважаемый гость!",
-      invP1: "В честь свадебного торжества нашего сына Абдурахмона искренне приглашаем вас на утренний плов.",
-      invP2: "Добро пожаловать к нашему столу! Плов готов, место почётное. Ваше присутствие — для нас честь и радость.",
-      invP3: "Разделим традиционный плов в кругу близких людей. Искренне ждём вас!",
+      invP1: "В честь свадебного торжества нашего сына Абдурахмона искренне приглашаем вас на праздничный навкар.",
+      invP2: "Добро пожаловать в наш дом! Стол накрыт, место почётное. Ваше присутствие — для нас честь и радость.",
+      invP3: "Разделим торжество навкар в кругу близких людей. Искренне ждём вас!",
       invClosing: "С уважением — Семья Ровшанжона Юнусова",
-      featPlov: "Плов",
-      featPlovDesc: "Традиционный узбекский плов",
-      featTime: "В 07:00",
-      featTimeDesc: "Начало утреннего плова",
+      featHome: "Дома",
+      featHomeDesc: "Семейное торжество",
+      featTime: "В 12:00",
+      featTimeDesc: "Начало навкара",
       featTogether: "Вместе",
       featTogetherDesc: "В кругу близких",
-      calLabel: "Неделя плова",
+      calLabel: "Неделя навкара",
       calTitle: "Октябрь 2026",
-      calBadge: "День плова",
+      calBadge: "День навкара",
       dayDush: "Пн",
       daySesh: "Вт",
       dayChorsh: "Ср",
@@ -85,27 +85,27 @@
       dayJuma: "Пт",
       dayShanba: "Сб",
       dayYaksh: "Вс",
-      countLabel: "До плова осталось",
+      countLabel: "До навкара осталось",
       days: "Дней",
       hours: "Часов",
       minutes: "Минут",
       seconds: "Секунд",
       locLabel: "Адрес",
-      locTitle: "Ресторан «Zamona»",
-      locName: "Ресторан «Zamona»",
-      locAddress: "Город Ташкент<br>Алмазарский район",
+      locTitle: "Наш дом",
+      locName: "Наш дом",
+      locAddress: "Келес, коттежная улица<br>Улица Обод 2-тор",
       btnYandex: "Яндекс Карты",
       btnGoogle: "Google Карты",
-      footerDate: "7 октября, 2026"
+      footerDate: "8 октября, 2026"
     }
   };
 
-  let currentLang = localStorage.getItem('osh_lang') || 'uz';
+  let currentLang = localStorage.getItem('navkar_lang') || 'uz';
 
   function setLanguage(lang) {
     if (!TRANSLATIONS[lang]) return;
     currentLang = lang;
-    localStorage.setItem('osh_lang', lang);
+    localStorage.setItem('navkar_lang', lang);
     document.documentElement.lang = lang;
 
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
@@ -321,7 +321,7 @@
 
   function updateCountdown() {
     const now = new Date();
-    const diff = OSH_DATE - now;
+    const diff = NAVKAR_DATE - now;
 
     if (diff <= 0) {
       daysEl.textContent = '00';
@@ -346,7 +346,7 @@
   setInterval(updateCountdown, 1000);
 
   const fadeElements = document.querySelectorAll(
-    '.invitation__inner, .calendar-card, .countdown__grid, .location-card, .osh-feature__card'
+    '.invitation__inner, .calendar-card, .countdown__grid, .location-card, .navkar-feature__card'
   );
 
   fadeElements.forEach(function (el) {
